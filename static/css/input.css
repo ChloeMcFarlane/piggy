@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@source not "./tailwindcss";
+@source not "./daisyui{,*}.mjs";
+
+@plugin "./daisyui.mjs" {
+  themes: false;
+}
+
+@plugin "./daisyui-theme.mjs" {
+  name: "finsite";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #f9f5eb;          /* floral white: page */
+  --color-base-200: #eee9dc;          /* slightly deeper: cards, raised surfaces */
+  --color-base-300: #cfcfce;          /* dust grey: borders, dividers */
+  --color-base-content: #02030f;      /* ink black: text */
+
+  --color-primary: #f757a2;           /* deep pink */
+  --color-primary-content: #02030f;
+  --color-secondary: #f8a6c7;         /* baby pink */
+  --color-secondary-content: #02030f;
+  --color-accent: #04a777;            /* jungle green */
+  --color-accent-content: #02030f;
+  --color-neutral: #02030f;           /* ink black: navbar */
+  --color-neutral-content: #f9f5eb;
+
+  --color-success: #04a777;           /* income */
+  --color-success-content: #02030f;
+  --color-error: #f757a2;             /* expenses */
+  --color-error-content: #02030f;
+
+  /* Not in your palette, so these are placeholders: swap in your own */
+  --color-info: #7fb5e6;
+  --color-info-content: #02030f;
+  --color-warning: #f2c14e;
+  --color-warning-content: #02030f;
+
+  --radius-box: 0.75rem;
+  --radius-field: 0.5rem;
+}

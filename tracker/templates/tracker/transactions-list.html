@@ -1,0 +1,19 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+
+{% block head_title %}Transactions List{% endblock %}
+{% block container_class %}p-4{% endblock %}
+
+{% block content %}
+<h1 class="header">Transactions</h1>
+
+<div class="balance">
+    <div class="eyebr"><h3>balance</h3></div>
+    <div id="num">
+        <h3 id="curr">$</h3>
+        <h2>30,222</h2>
+    </div>
+</div>
+    {% include 'tracker/partials/transactions-container.html' %}
+
+{% endblock %}

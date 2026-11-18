@@ -1,0 +1,46 @@
+
+{% load widget_tweaks %}
+<div class="fin-wrapper">
+
+    <aside class="form-wrapper">
+        <h2>Filters</h2>
+        <form hx-get="{% url 'transactions-list' %}"
+              hx-target=".fin-wrapper"
+              hx-swap="outerHTML"
+              hx-push-url="true">
+
+            <div class="form-control">
+                {{ filter.form.transaction_type|add_label_class:'label' }}
+                {% render_field filter.form.transaction_type class="select" %}
+            </div>
+            <button class="filter-btn">Filter</button>
+        </form>
+    </aside>
+
+    <section class="trans-wrapper">
+        {% for transaction in filter.qs %}
+        <div class="transaction" style="--i: {{ forloop.counter0 }}">
+            <div class="icon icon-{{ transaction.type }}" aria-hidden="true">
+                {% if transaction.type == "income" %}
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                {% else %}
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                {% endif %}
+            </div>
+            
+            <div class="details">
+                <h3 class="category">{{ transaction.category }}</h3>
+                <p class="meta">{{ transaction.type|title }} · {{ transaction.date|date:"M j, Y · g:i A" }}</p>
+            </div>
+
+            <div class="amount">
+                {% if transaction.type == "income" %}+{% else %}−{% endif %}${{ transaction.amount|floatformat:2 }}
+            </div>
+            
+        </div>
+        {% empty %}
+        <p class="text-2xl">No transactions found</p>
+        {% endfor %}
+    </section>
+
+</div>
