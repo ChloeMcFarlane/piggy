@@ -20,7 +20,8 @@ def index(request):
 def transactions_list(request):
     transaction_filter = TransactionFilter(
         request.GET,
-        queryset=Transaction.objects.filter(user=request.user)
+        # FOR IDEAL PERFORMANCE
+        queryset=Transaction.objects.filter(user=request.user).select_related('category')
     )
     context = {'filter': transaction_filter}
     # RETURN TEMPLATE FRAGMENT
