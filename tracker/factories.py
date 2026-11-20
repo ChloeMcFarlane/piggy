@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 import factory
 
 from tracker.models import Category, Transaction, User
@@ -44,14 +45,14 @@ class TransactionFactory(factory.django.DjangoModelFactory):
     category = factory.SubFactory(CategoryFactory)
     amount = 5
     date = factory.Faker(
-        'date_between',
+        'date_time_between',
         start_date=datetime(year=2022, month=1, day=1),
-        end_date=datetime.now().date(),
+        end_date=datetime.now(),
+        tzinfo=timezone.get_current_timezone(),
     )
 
-    type = factory.Faker(
-        'random_element',
-        elements=[
+    type = factory.Iterator(
+        [
             x[0] for x in Transaction.TRANSACTION_TYPE_CHOICES
         ]
     )

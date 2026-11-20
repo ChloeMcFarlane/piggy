@@ -1,10 +1,13 @@
 # Authentication imports
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
+
 # Models import
 from django.db import models
+
 # Date/Time import
 from django.utils import timezone
+
 # Import QuerySets from managers.py
 from .managers import TransactionQuerySet
 
