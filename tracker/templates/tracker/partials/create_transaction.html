@@ -1,14 +1,18 @@
 {% extends 'tracker/base.html' %}
 {% load static %}
 
-{% block content %}
 {% load widget_tweaks %}
+
+{% block content%}
 <h1 class="header"> Create Transaction </h1>
-{% load widget_tweaks %}
 
 <div id="create-form" class="create-wrapper form-wrapper">
 
-    <form hx-post="{% url 'create-transaction' %}">
+    <form method="post"
+        action="{% url 'create-transaction'%}"
+        hx-post="{% url 'create-transaction'%}"
+        hx-target="#transaction-block"
+        hx-swap="innerHTML">
         {% csrf_token %}
 
         {% if form.errors %}

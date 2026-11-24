@@ -12,6 +12,10 @@ from tracker.filter import TransactionFilter
 # FORM IMPORT
 from tracker.forms import TransactionForm
 
+# HTMX AND HTTP IMPORTS
+from django.http import HttpResponse
+from django.urls import reverse
+
 
 def home(request):
     return render(request, 'index.html')
@@ -56,13 +60,32 @@ def create_transaction(request):
             transaction = form.save(commit=False)
             transaction.user = request.user
             transaction.save()
-            return redirect('transactions-list')
+            request.session['success_message'] = "Transaction was added successfully!"
+            return redirect('transaction-success')
+
+            if request.htmx:
+                response = HttpResponse()
+                response['HX-Redirect'] = reverse('transactoin-success')
+                return response
+            return redirect('transaction-success')
     else:
         form = TransactionForm()
 
-    context = {'form': form}
+    context = {'form' : form}
 
     if request.htmx and not request.htmx.history_restore_request:
         return render(request, 'tracker/partials/create_transaction.html', context)
-
+    
     return render(request, 'tracker/partials/create_transaction.html', context)
+
+
+
+
+@login_required
+def transaction_success(request):
+    message = request.session.pop('success_message', None)
+    if message is None:
+        return redirect('transactions-list')
+    return render(request, 'tracker/transaction_success.html', {'message': message})
+
+    

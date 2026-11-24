@@ -110,13 +110,12 @@ nav a:hover {
     transform: translateY(-1px);
 }
 
-.nav-link{
+.nav-link {
     padding: 3px 1rem;
     border: 1px solid transparent;
     border-radius: 25px;
     background-color: var(--color-base-200);
     color: var(--color-primary);
-
 }
 
 /* ========================================================================
@@ -327,12 +326,12 @@ TRANSACTION DISPLAY
 }
 
 /* ========================================================================
-FORM DISPLAY (black sidebar)
+FORM DISPLAY (black sidebar: the FILTER form, restored to the original)
  ========================================================================*/
 
 .fin-wrapper {
     display: grid;
-    grid-template-columns: 20% 1fr;
+    grid-template-columns: 30% 1fr;
     gap: 1rem;
     height: calc(100vh - 10rem);
 }
@@ -343,16 +342,13 @@ FORM DISPLAY (black sidebar)
     height: 100%;
     padding: 1.5rem 1rem;
     border-radius: 1.2rem;
-    border: 2px solid #443e436c;
+    border: 1px solid #1d1d26;
     color: var(--color-base-100);
     background:
-        radial-gradient(circle at 100% 0%, transparent 39.92%, rgba(247, 87, 162, 0.28) 58.4%),
-        linear-gradient(to left, #0b0b10, #02030f);
+        radial-gradient(circle at 100% 0%, rgba(247, 87, 162, 0.28), transparent 55%),
+        linear-gradient(180deg, #0b0b10, var(--ink));
     transition: border-color 0.4s ease, box-shadow 0.4s ease;
     animation: card-in 600ms var(--ease-out) both;
-    margin: auto;
-    max-width: 50%;
-    width: 70%;
 }
 
 .form-wrapper:hover,
@@ -383,6 +379,7 @@ FORM DISPLAY (black sidebar)
     width: 100%;
 }
 
+/* scoped to .label (not every <label>) so the chips don't inherit it */
 .form-wrapper .label {
     display: block;
     color: var(--color-base-100);
@@ -398,15 +395,6 @@ FORM DISPLAY (black sidebar)
 .form-wrapper .form-control:focus-within .label {
     opacity: 1;
     color: var(--color-secondary);
-}
-
-.form-wrapper .form-wrapper{
-    padding: 1rem;
-}
-
-.form-wrapper .input,
-.form-wrapper .select {
-    padding: 0.65rem 0.9rem;   /* top/bottom, left/right */
 }
 
 .form-wrapper .select {
@@ -471,7 +459,7 @@ FORM DISPLAY (black sidebar)
     transform: translateY(0) scale(0.97);
 }
 
-.date-filters{
+.date-filters {
     padding-top: 8px;
 }
 
@@ -499,34 +487,51 @@ FORM DISPLAY (black sidebar)
 }
 
 /* ========================================================================
-CREATE TRANSACTION FORM (reuses the .form-wrapper dark card)
+CREATE TRANSACTION FORM (#create-form)
+Markup: <div id="create-form" class="create-wrapper form-wrapper">
+It shares labels/headings/selects with the sidebar via .form-wrapper,
+and everything below overrides only what is unique to the create form.
  ========================================================================*/
 
- .create-wrapper {
-    height: auto;              
+.create-wrapper {
+    height: auto;              /* .form-wrapper sets 100%, which only suits the grid sidebar */
     overflow: visible;
     margin: auto;
     max-width: 100%;
     width: 100%;
 }
 
-.create-wrapper .form-control {
+#create-form {
+    border: 2px solid #443e436c;
+    background:
+        radial-gradient(circle at 100% 0%, transparent 39.92%, rgba(247, 87, 162, 0.28) 58.4%),
+        linear-gradient(to left, #0b0b10, #02030f);
+}
+
+/* the ID outranks .form-wrapper:hover, so the hover border is repeated here */
+#create-form:hover,
+#create-form:focus-within {
+    border-color: rgba(247, 87, 162, 0.5);
+}
+
+#create-form .form-control {
     margin-bottom: 1rem;
 }
 
-.create-wrapper .form-row {
+#create-form .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
 }
 
-.create-wrapper .chips {
+#create-form .chips {
     margin-top: 0;
 }
 
-/* there was no .input style, so the date and amount fields matched .select */
-.form-wrapper .input {
+#create-form .input,
+#create-form .select {
     width: 100%;
+    padding: 0.65rem 0.9rem;   /* space around typed text and placeholder */
     background-color: #16161d;
     color: var(--color-base-100);
     border: 1px solid #2f2f3a;
@@ -535,18 +540,23 @@ CREATE TRANSACTION FORM (reuses the .form-wrapper dark card)
     transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--ease-out);
 }
 
-.form-wrapper .input:hover {
+#create-form .input:hover {
     border-color: rgba(247, 87, 162, 0.7);
     transform: translateY(-1px);
 }
 
-.form-wrapper .input:focus {
+#create-form .input:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(247, 87, 162, 0.25);
 }
 
-.create-wrapper .form-errors {
+#create-form .input::placeholder {
+    color: rgba(249, 245, 235, 0.4);
+    font-size: 0.85rem;
+}
+
+#create-form .form-errors {
     margin-bottom: 1rem;
     padding: 0.6rem 0.85rem;
     border-radius: 0.9rem;
@@ -560,37 +570,35 @@ CREATE TRANSACTION FORM (reuses the .form-wrapper dark card)
 BALANCE WRAPPER
  ========================================================================*/
 
- .balance{
+.balance {
     margin: 1rem auto;
-    width:auto;
- }
+    width: auto;
+}
 
- .balance .eyebr{
+.balance .eyebr {
     color: var(--color-base-300);
- }
+}
 
- .balance #num{
-    display:flex;
+.balance #num {
+    display: flex;
     flex-direction: row;
-
     font-weight: 700;
     font-size: 6.5rem;
     margin-top: -18px;
+}
 
- }
-
- .balance #num #curr{
+.balance #num #curr {
     font-size: 3rem;
     padding-top: 3.5rem;
     font-weight: 750;
     color: rgba(3, 1, 2, 0.556);
- }
+}
 
- /* ========================================================================
-CHIPS STYLING
+/* ========================================================================
+CHIPS STYLING (shared by the filter and create forms)
  ========================================================================*/
 
- .chips {
+.chips {
     border: 0;
     padding: 0;
     margin: 1rem 0 0;
@@ -609,7 +617,7 @@ CHIPS STYLING
     cursor: pointer;
 }
 
-/* hide the real checkbox but keep it focusable */
+/* hide the real checkbox/radio but keep it focusable */
 .chip input {
     position: absolute;
     opacity: 0;
@@ -667,7 +675,6 @@ CHIPS STYLING
     text-decoration: underline;
 }
 
-
 /* ========================================================================
 RESPONSIVENESS
  ========================================================================*/
@@ -676,13 +683,13 @@ RESPONSIVENESS
     .fin-wrapper { grid-template-columns: 1fr; height: auto; }
 }
 
+@media (max-width: 520px) {
+    #create-form .form-row { grid-template-columns: 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation: none !important;
         transition: none !important;
     }
-}
-
-@media (max-width: 520px) {
-    .create-wrapper .form-row { grid-template-columns: 1fr; }
 }
