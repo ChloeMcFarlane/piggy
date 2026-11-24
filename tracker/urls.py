@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
-    path("", views.index, name='index'),
-    path("", views.home, name="home"),
+    path("", views.index, name="index"),
+    path("home/", views.home, name="home"),
     path("admin/", admin.site.urls),
-    path("transactions/create/", views.create_transaction, name='create-transaction'),
+    path("transactions/", views.transactions_list, name="transactions-list"),
+    path("transactions/create/", views.create_transaction, name="create-transaction"),
+    path("transactions/success/", views.transaction_success, name="transaction-success"),
 ]

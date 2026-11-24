@@ -10,8 +10,6 @@
 
     <form method="post"
         action="{% url 'create-transaction'%}"
-        hx-post="{% url 'create-transaction'%}"
-        hx-target="#transaction-block"
         hx-swap="innerHTML">
         {% csrf_token %}
 

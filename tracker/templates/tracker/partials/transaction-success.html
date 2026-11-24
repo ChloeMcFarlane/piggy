@@ -1,16 +1,18 @@
 {% extends "tracker/base.html" %}
 
+{% block head_title %}Transaction Added{% endblock %}
+
 {% block content %}
 
 <div role="alert" class="alert alert-success alert-soft">
     <span>{{ message }}</span>
 </div>
 
-<div class="mt-4"> 
+<div class="mt-4 flex gap-2">
     <a href="{% url 'create-transaction' %}" class="btn btn-success">
         Add Another
     </a>
-    <a href="{% url 'transaction-list' %}" class="btn btn-success">
+    <a href="{% url 'transactions-list' %}" class="btn btn-success">
         View All Transactions
     </a>
 </div>
