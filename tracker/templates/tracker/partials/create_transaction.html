@@ -1,0 +1,54 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+
+{% block content %}
+{% load widget_tweaks %}
+<h1 class="header"> Create Transaction </h1>
+{% load widget_tweaks %}
+
+<div id="create-form" class="create-wrapper form-wrapper">
+
+    <form hx-post="{% url 'create-transaction' %}">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="form-errors">
+            {% for field in form %}{% for error in field.errors %}
+            <p>{{ field.label }}: {{ error }}</p>
+            {% endfor %}{% endfor %}
+            {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="form-control">
+            <label class="label" for="{{ form.type.id_for_label }}">Type</label>
+            {% render_field form.type class="select" %}
+        </div>
+
+        <div class="form-row">
+            <div class="form-control">
+                <label class="label" for="{{ form.amount.id_for_label }}">Amount</label>
+                {% render_field form.amount class="input" placeholder="0.00" %}
+            </div>
+            <div class="form-control">
+                <label class="label" for="{{ form.date.id_for_label }}">Date</label>
+                {% render_field form.date class="input" %}
+            </div>
+        </div>
+
+        <div class="form-control">
+            <fieldset class="chips">
+                <legend class="label">Category</legend>
+                {% for radio in form.category %}
+                <label class="chip">
+                    {{ radio.tag }}
+                    <span>{{ radio.choice_label }}</span>
+                </label>
+                {% endfor %}
+            </fieldset>
+        </div>
+
+        <button class="filter-btn" type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}

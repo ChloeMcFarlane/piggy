@@ -1,18 +1,70 @@
-
 {% load widget_tweaks %}
+{% load humanize %}
+
+<div id="balance" class="balance">
+    <div class="eyebr"><h3>balance</h3></div>
+    <div id="num">
+        <h3 id="curr">$</h3>
+        <h2>{{ net_income|floatformat:2|intcomma }}</h2>
+    </div>
+</div>
+
+
 <div class="fin-wrapper">
 
     <aside class="form-wrapper">
         <h2>Filters</h2>
         <form hx-get="{% url 'transactions-list' %}"
-              hx-target=".fin-wrapper"
-              hx-swap="outerHTML"
-              hx-push-url="true">
+            hx-trigger="change delay:250ms, submit"
+            hx-target=".trans-wrapper"
+            hx-select=".trans-wrapper"
+            hx-select-oob="#balance"
+            hx-swap="outerHTML"
+            hx-push-url="true">
 
+              <!-- TYPE FILTER -->
             <div class="form-control">
                 {{ filter.form.transaction_type|add_label_class:'label' }}
                 {% render_field filter.form.transaction_type class="select" %}
             </div>
+
+             <!-- DATE FILTERS -->
+            <div class="date-filters">
+                <div class="form-control">
+                    {{ filter.form.start_date|add_label_class:'label' }}
+                    {% render_field filter.form.start_date class="input" %}
+                </div>
+    
+                <div class="form-control">
+                    {{ filter.form.end_date|add_label_class:'label' }}
+                    {% render_field filter.form.end_date class="input" %}
+                </div>
+            </div>
+
+            <!-- CATEGORY FILTERS -->
+            <div class="form-control">
+                <fieldset class="chips">
+                    <legend class="label">
+                        Categories
+                    </legend>
+                    {% for checkbox in filter.form.category %}
+                    <label class="chip">
+                        {{ checkbox.tag }}
+                        <span>{{ checkbox.choice_label }}</span>
+                    </label>
+                    {% endfor %}
+                </fieldset>
+            </div>
+
+            <a class="chips-clear"
+                href="{% url 'transactions-list' %}"
+                hx-get="{% url 'transactions-list' %}"
+                hx-target=".fin-wrapper"
+                hx-select=".fin-wrapper"
+                hx-select-oob="#balance"
+                hx-swap="outerHTML"
+                hx-push-url="true">Clear all</a>
+        
             <button class="filter-btn">Filter</button>
         </form>
     </aside>
@@ -34,7 +86,7 @@
             </div>
 
             <div class="amount">
-                {% if transaction.type == "income" %}+{% else %}−{% endif %}${{ transaction.amount|floatformat:2 }}
+                {% if transaction.type == "income" %}+{% else %}−{% endif %}${{ transaction.amount|floatformat:2|intcomma }}
             </div>
             
         </div>

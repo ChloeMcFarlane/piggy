@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'finance_project',
+    'django.contrib.humanize',
     
     # external apps
     "django_extensions",
