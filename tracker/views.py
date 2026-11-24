@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django_htmx.http import retarget
 
 from tracker.models import Transaction
 from tracker.filter import TransactionFilter
@@ -42,7 +43,6 @@ def transactions_list(request):
     return response
 
 
-@login_required
 @login_required
 def create_transaction(request):
     if request.method == 'POST':

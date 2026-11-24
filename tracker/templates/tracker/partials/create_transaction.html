@@ -1,12 +1,17 @@
 {% extends 'tracker/base.html' %}
 {% load static %}
-
 {% load widget_tweaks %}
 
-{% block content%}
-<h1 class="header"> Create Transaction </h1>
+{% block content %}
+
+<link href="{% static 'css/success_error_assets.css' %}" rel="stylesheet">
+
+<!-- WHY DOES THIS KEEP TWEAKING? -->
+ <!-- LAST CHANGE MADE 3:53 PM ON TUESDAY -->
 
 <div id="create-form" class="create-wrapper form-wrapper">
+
+    <h1 class="header"> Create Transaction </h1>
 
     <form method="post"
         action="{% url 'create-transaction'%}"
@@ -51,6 +56,13 @@
         </div>
 
         <button class="filter-btn" type="submit">Save</button>
+
+        <button id="cancel-btn" class="filter-btn" 
+            hx-get="{% url 'transactions-list' %}" 
+            hx-target="#transaction-block"
+            hx-push-url="/transactions">
+            Cancel
+        </button>
     </form>
 </div>
 {% endblock %}

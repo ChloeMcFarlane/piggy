@@ -170,6 +170,10 @@ BUTTON STYLING
     transform: scale(0.95);
 }
 
+.btn-success{
+    
+}
+
 /* ========================================================================
 TRANSACTION DISPLAY
  ========================================================================*/
@@ -458,6 +462,13 @@ FORM DISPLAY (black sidebar: the FILTER form, restored to the original)
 .filter-btn:active {
     transform: translateY(0) scale(0.97);
 }
+
+#cancel-btn{
+    background: linear-gradient(105deg, #f8a6c73e, #f757a251);
+    color: var(--color-base-200);
+    border: solid 2px #302f2e6b;
+}
+    
 
 .date-filters {
     padding-top: 8px;

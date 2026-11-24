@@ -77,6 +77,12 @@ def test_category_filter(user_transactions, client):
     assert all(t.category_id in category_pks for t in qs)
 
 
+@pytestmark.django_db
+def test_add_transaction_request(user, transcaction_dict_params, client):
+    client.force_login(user)
+
+
+
 
 
 
