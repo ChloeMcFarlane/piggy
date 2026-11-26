@@ -14,14 +14,14 @@ def user_transactions():
 @pytest.fixture
 def user():
     return UserFactory()
+    
 
 @pytest.fixture
 def transaction_dict_params(user):
     transaction = TransactionFactory.create(user=user)
     return {
-        'type' : transaction.type,
-        'category' : transaction.category_id
-        'date' : transaction.date,
-        'amount' : transaction.amount,
-        'description' : transaction.description
+        'type': transaction.type,
+        'category': transaction.category_id,
+        'date': transaction.date,
+        'amount': transaction.amount,
     }

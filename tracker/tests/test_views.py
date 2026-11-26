@@ -2,7 +2,8 @@ import pytest
 from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime, timedelta
-from tracker.models import Category
+from tracker.models import Category, Transaction
+from pytest_django.asserts import assertTemplateUsed
 
 @pytest.mark.django_db
 def test_total_values_appear_on_list_page(user_transactions, client):
@@ -77,10 +78,39 @@ def test_category_filter(user_transactions, client):
     assert all(t.category_id in category_pks for t in qs)
 
 
-@pytestmark.django_db
-def test_add_transaction_request(user, transcaction_dict_params, client):
+@pytest.mark.django_db
+def test_add_transaction_request(user, transaction_dict_params, client):
     client.force_login(user)
+    user_transaction_count = Transaction.objects.filter(user=user).count()
 
+    # send request with transaction data
+    response = client.post(
+        reverse('create-transaction'), 
+        transaction_dict_params,
+        follow=True
+    )
+
+    # assert the count has increased
+    assert Transaction.objects.filter(user=user).count() == user_transaction_count + 1
+
+    assertTemplateUsed(response, 'tracker/partials/transaction-success.html')
+
+@pytest.mark.django_db
+def test_cannot_add_transaction_with_negative_amount(user, transaction_dict_params, client):
+    client.force_login(user)
+    user_transaction_count = Transaction.objects.filter(user=user).count()
+
+    transaction_dict_params['amount'] = -44
+    response = client.post(
+        reverse('create-transaction'), 
+        transaction_dict_params,
+        follow=True
+    )
+
+    assert Transaction.objects.filter(user=user).count() == user_transaction_count
+    
+    assertTemplateUsed(response, 'tracker/partials/create_transaction.html')
+    assert response.context['form'].errors
 
 
 
