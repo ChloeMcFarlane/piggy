@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -65,3 +65,6 @@ def transaction_success(request):
     if message is None:
         return redirect('transactions-list')
     return render(request, 'tracker/partials/transaction-success.html', {'message': message})
+
+def update_transaction(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk)
